@@ -30,6 +30,8 @@ public class TorchSwitch extends BroadcastReceiver {
             // Unload intent extras if they exist:
             boolean bright = receivingIntent.getBooleanExtra("bright", false) |
                     mPrefs.getBoolean("bright", false);
+            boolean offTimer = receivingIntent.getBooleanExtra("offTimer", false) |
+                    mPrefs.getBoolean("offTimer", false);
             boolean strobe = receivingIntent.getBooleanExtra("strobe", false) |
                     mPrefs.getBoolean("strobe", false);
             int period = receivingIntent.getIntExtra("period", 200);
@@ -38,6 +40,7 @@ public class TorchSwitch extends BroadcastReceiver {
                 context.stopService(i);
             } else {
                 i.putExtra("bright", bright);
+                i.putExtra("offTimer", offTimer);
                 i.putExtra("strobe", strobe);
                 i.putExtra("period", period);
                 context.startService(i);

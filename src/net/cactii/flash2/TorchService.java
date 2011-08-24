@@ -1,5 +1,6 @@
 package net.cactii.flash2;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +14,7 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.util.Log;
 
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -91,6 +93,18 @@ public class TorchService extends Service {
         } else {
             this.mTorchTimer.schedule(this.mTorchTask, 0, 100);
         }
+        
+        if (intent.getBooleanExtra("offTimer", false)) {       	
+        	Intent offTimerIntent = new Intent(TorchSwitch.TOGGLE_FLASHLIGHT);
+        	PendingIntent pi = PendingIntent.getBroadcast(this, 0, offTimerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(System.currentTimeMillis());
+            cal.add(Calendar.SECOND, 60);
+            
+            AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+            am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
+        }
 
         this.mReceiver = new IntentReceiver();
         registerReceiver(this.mReceiver, new IntentFilter("net.cactii.flash2.SET_STROBE"));
@@ -110,6 +124,12 @@ public class TorchService extends Service {
     }
 
     public void onDestroy() {
+    	//cancel all PIs, so that the led isn't activated again if user disabled it manually before the offTimer runs out
+    	Intent offTimerIntent = new Intent(TorchSwitch.TOGGLE_FLASHLIGHT);
+    	PendingIntent pi = PendingIntent.getBroadcast(this, 0, offTimerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    	AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
+    	am.cancel(pi);
+    	
         this.mNotificationManager.cancelAll();
         this.unregisterReceiver(this.mReceiver);
         stopForeground(true);
