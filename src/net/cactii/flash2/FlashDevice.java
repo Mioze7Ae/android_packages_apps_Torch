@@ -8,7 +8,7 @@ import java.io.IOException;
 public class FlashDevice {
     
     private static final String DEVICE = "/sys/devices/platform/flashlight.0/leds/flashlight/brightness";
-    private static final String DEVICE_SHOLES = "/sys/class/leds/spotlight/brightness";
+    private static final String DEVICE_SHOLES = "/sys/class/leds/af-led/brightness";
 	
     public static final int STROBE    = -1;
 	public static final int OFF       = 0;
