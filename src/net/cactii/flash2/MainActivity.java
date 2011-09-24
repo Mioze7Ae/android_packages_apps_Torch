@@ -38,6 +38,10 @@ public class MainActivity extends Activity {
     private CheckBox buttonStrobe;
 
     private CheckBox buttonBright;
+    
+    private CheckBox buttonOffTimer;
+    
+    private boolean offTimer;
 
     private boolean bright;
 
@@ -76,6 +80,7 @@ public class MainActivity extends Activity {
         strobeLabel = (TextView) findViewById(R.id.strobeTimeLabel);
         slider = (SeekBar) findViewById(R.id.slider);
         buttonBright = (CheckBox) findViewById(R.id.bright);
+        buttonOffTimer = (CheckBox) findViewById(R.id.timer);
 
         strobeperiod = 100;
         mTorchOn = false;
@@ -117,6 +122,23 @@ public class MainActivity extends Activity {
                 buttonStrobe.setChecked(!buttonStrobe.isChecked());
             }
         });
+        
+        offTimer = this.mPrefs.getBoolean("offTimer", false);
+        buttonOffTimer.setChecked(offTimer);
+        buttonOffTimer.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    offTimer = true;
+                    mPrefsEditor.putBoolean("offTimer", true);
+                    mPrefsEditor.commit();
+                }else {
+                	offTimer = false;
+                    mPrefsEditor.putBoolean("offTimer", false);
+                    mPrefsEditor.commit();
+                }
+            }
+        });
 
         buttonOn.setOnClickListener(new OnClickListener() {
             @Override
@@ -125,6 +147,7 @@ public class MainActivity extends Activity {
                 intent.putExtra("strobe", buttonStrobe.isChecked());
                 intent.putExtra("period", strobeperiod);
                 intent.putExtra("bright", bright);
+                intent.putExtra("offTimer", offTimer);
                 context.sendBroadcast(intent);
             }
         });
@@ -243,6 +266,7 @@ public class MainActivity extends Activity {
             mTorchOn = true;
             buttonOn.setChecked(true);
             buttonBright.setEnabled(false);
+            buttonOffTimer.setEnabled(false);
             buttonStrobe.setEnabled(false);
             if (!buttonStrobe.isChecked()) {
                 slider.setEnabled(false);
@@ -251,6 +275,7 @@ public class MainActivity extends Activity {
             mTorchOn = false;
             buttonOn.setChecked(false);
             buttonBright.setEnabled(useBrightSetting);
+            buttonOffTimer.setEnabled(true);
             buttonStrobe.setEnabled(true);
             slider.setEnabled(true);
         }

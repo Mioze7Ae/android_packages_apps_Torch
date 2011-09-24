@@ -58,6 +58,8 @@ public class TorchWidgetProvider extends AppWidgetProvider {
                 Intent pendingIntent = new Intent(TorchSwitch.TOGGLE_FLASHLIGHT);
                 pendingIntent.putExtra("bright",
                         mPrefs.getBoolean("widget_bright_" + widgetId, false));
+                pendingIntent.putExtra("offTimer",
+                        mPrefs.getBoolean("widget_offTimer_" + widgetId, false));
                 pendingIntent.putExtra("strobe",
                         mPrefs.getBoolean("widget_strobe_" + widgetId, false)); 
                 pendingIntent.putExtra("period",

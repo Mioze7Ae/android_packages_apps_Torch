@@ -18,6 +18,7 @@
     <string name="label_on">On</string>
     <string name="label_off">Off</string>
     <string name="label_high">High brightness</string>
+    <string name="label_timer">Auto-off timer (60 secs)</string>
     <string name="label_strobe">Strobe</string>
     <string name="label_frequency">Frequency: (slide to change)</string>
 
