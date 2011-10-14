@@ -29,8 +29,8 @@ public class FlashDevice {
     /* ---------- TEMPORARY BLOCK FOR DELETION -----------------------------
      * Old variables. Delete these once all devices have
      * been converted */
-    private static String DEVICE_FLASH = "/sys/class/leds/flashlight/brightness";
-    private static final String DEVICE_SPOTL = "/sys/class/leds/spotlight/brightness";
+    private static String DEVICE_FLASH = "/sys/class/leds/af-led/brightness";
+    private static final String DEVICE_SPOTL = "/sys/class/leds/af-led/brightness";
 
 /*
    some motorola devices don't have the flashlight file under flashlight
@@ -40,7 +40,7 @@ public class FlashDevice {
     static {
         File ff = new File(DEVICE_FLASH);
         if (! ff.exists()) {
-            DEVICE_FLASH = "/sys/class/leds/torch-flash/brightness";
+            DEVICE_FLASH = "/sys/class/leds/af-led/brightness";
         }
     }
 
